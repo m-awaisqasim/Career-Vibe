@@ -1,0 +1,8 @@
+git add .
+git commit -m "Update List of Course's"
+git push
+
+git add index.html
+git add README.md
+git add .gitignore
+git add Deploy to Github Code.txt
