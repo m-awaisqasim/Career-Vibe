@@ -124,7 +124,12 @@ export default function Home() {
       const response = await fetch('/api/generate-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description: currentProject.description })
+        body: JSON.stringify({
+          description: currentProject.description,
+          projectName: currentProject.name,
+          githubUrl: currentProject.githubLink,
+          languages: currentProject.technologies
+        })
       })
 
       const data = await response.json()
@@ -137,6 +142,12 @@ export default function Home() {
         toast({
           title: 'Success',
           description: 'Project content enhanced with AI'
+        })
+      } else {
+        toast({
+          title: 'Error',
+          description: data.error || 'Failed to generate content',
+          variant: 'destructive'
         })
       }
     } catch (error) {
@@ -511,6 +522,11 @@ export default function Home() {
                     <Plus className="w-4 h-4 mr-2" />
                     Add Project
                   </Button>
+                  {currentProject.highlights && currentProject.highlights.length > 0 && (
+                    <p className="text-xs text-muted-foreground text-center">
+                      ✓ Highlights generated! Click "Add Project" to save them and see in preview
+                    </p>
+                  )}
                 </div>
 
                 {/* Project List */}

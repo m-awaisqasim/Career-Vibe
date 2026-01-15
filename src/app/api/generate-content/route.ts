@@ -3,7 +3,7 @@ import ZAI from 'z-ai-web-dev-sdk'
 
 export async function POST(request: NextRequest) {
   try {
-    const { description } = await request.json()
+    const { description, projectName, githubUrl, languages } = await request.json()
 
     if (!description) {
       return NextResponse.json(
@@ -14,20 +14,46 @@ export async function POST(request: NextRequest) {
 
     const zai = await ZAI.create()
 
-    const systemPrompt = `You are an expert portfolio content writer. Your task is to enhance project descriptions for professional portfolios.
+    // Build context from available information
+    let context = `Project Name: ${projectName || 'Not specified'}\n`
+    if (githubUrl) {
+      context += `GitHub URL: ${githubUrl}\n`
+    }
+    if (languages && languages.length > 0) {
+      context += `Languages/Technologies from repo: ${languages.join(', ')}\n`
+    }
+    context += `Description: ${description}\n`
 
-Given a project description, you should:
-1. Extract or generate 3-5 key highlights/bullet points that showcase the project's achievements, features, or impact
-2. Identify relevant technologies used (if not explicitly mentioned, infer likely technologies based on the description)
-3. Make the content professional, concise, and impressive
+    const systemPrompt = `You are an expert portfolio content writer specializing in developer projects. Your task is to create professional, specific, and relevant highlights for project portfolios.
 
-IMPORTANT: Respond with valid JSON ONLY, in the following format:
+INSTRUCTIONS:
+1. Analyze the provided project information (name, description, GitHub URL, languages)
+2. Generate 3-5 specific, concrete highlights that describe what the project actually DOES and ACHIEVES
+3. Focus on features, technical implementation, and impact - DO NOT make up generic claims
+4. Each highlight should be specific to this particular project, not generic buzzwords
+5. If description is detailed, extract the actual achievements mentioned
+6. If description is brief, make reasonable inferences based on the tech stack and project name
+7. Avoid generic statements like "User-friendly interface" or "Modern design" - be specific
+8. Technologies should be inferred from description and languages - only list technologies actually mentioned or reasonably inferred
+
+CRITICAL RULES:
+- Be SPECIFIC and FACTUAL about what this project does
+- Don't mention features not indicated by the description
+- Each highlight should be unique and meaningful
+- Highlights should showcase technical skills and problem-solving
+- Make them achievement-focused when possible
+
+Respond with valid JSON ONLY, in this format:
 {
-  "highlights": ["highlight 1", "highlight 2", "highlight 3"],
-  "technologies": ["Technology1", "Technology2", "Technology3"]
+  "highlights": [
+    "Specific technical achievement or feature",
+    "Another concrete detail about the project",
+    "Third highlight showing impact or unique aspect"
+  ],
+  "technologies": ["Tech1", "Tech2", "Tech3"]
 }
 
-No additional text, no explanations, just the JSON.`
+No markdown, no code blocks, no explanations, no additional text - ONLY the JSON.`
 
     const completion = await zai.chat.completions.create({
       messages: [
@@ -37,7 +63,7 @@ No additional text, no explanations, just the JSON.`
         },
         {
           role: 'user',
-          content: `Project Description: "${description}"`
+          content: context
         }
       ],
       thinking: { type: 'disabled' }
@@ -49,17 +75,28 @@ No additional text, no explanations, just the JSON.`
       throw new Error('No response from AI')
     }
 
-    // Parse the JSON response
+    // Parse JSON response - try to extract clean JSON
     let content
     try {
-      content = JSON.parse(response)
+      // First, try direct parse
+      content = JSON.parse(response.trim())
     } catch (e) {
-      // If JSON parsing fails, try to extract JSON from the response
-      const jsonMatch = response.match(/\{[\s\S]*\}/)
-      if (jsonMatch) {
-        content = JSON.parse(jsonMatch[0])
-      } else {
-        throw new Error('Failed to parse AI response as JSON')
+      try {
+        // If that fails, look for JSON in markdown code blocks
+        const jsonMatch = response.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/)
+        if (jsonMatch) {
+          content = JSON.parse(jsonMatch[1])
+        } else {
+          // Last resort: try to find any JSON-like structure
+          const jsonMatch = response.match(/\{[\s\S]*\}/)
+          if (jsonMatch) {
+            content = JSON.parse(jsonMatch[0])
+          } else {
+            throw new Error('Failed to parse AI response as JSON')
+          }
+        }
+      } catch (e2) {
+        throw new Error(`Failed to parse AI response: ${response}`)
       }
     }
 
