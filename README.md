@@ -75,28 +75,6 @@ Real-time portfolio preview as you build:
 - SQLite database with Prisma ORM
 - Automatic updates to existing portfolios
 
-## 🛠️ Tech Stack
-
-### Frontend
-- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
-- **Language**: [TypeScript 5](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Components**: [shadcn/ui](https://ui.shadcn.com/) (New York style)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Animations**: [Framer Motion](https://www.framer.com/)
-
-### Backend
-- **API Routes**: Next.js Route Handlers
-- **AI SDK**: [z-ai-web-dev-sdk](https://sdk.z.ai/)
-- **GitHub API**: Public REST API
-- **Database**: [Prisma ORM](https://www.prisma.io/) with SQLite
-- **State Management**: React Hooks (useState, useEffect)
-
-### Development Tools
-- **Package Manager**: Bun
-- **Linting**: ESLint with Next.js config
-- **Hot Reload**: Next.js dev server
-
 ## 📦 Installation
 
 ### Prerequisites
@@ -108,62 +86,6 @@ Real-time portfolio preview as you build:
 ```bash
 git clone https://github.com/yourusername/career-vibe.git
 cd career-vibe
-```
-
-### Install Dependencies
-
-```bash
-# Using Bun (recommended)
-bun install
-
-# Or using npm
-npm install
-
-# Or using yarn
-yarn install
-```
-
-### Environment Setup
-
-Create a `.env` file in the root directory:
-
-```env
-DATABASE_URL="file:./db/custom.db"
-```
-
-### Database Setup
-
-```bash
-# Push the schema to the database
-bun run db:push
-
-# Or generate Prisma Client
-bun run db:generate
-```
-
-## 🚀 Usage
-
-### Development Server
-
-Start the development server:
-
-```bash
-bun run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Building for Production
-
-```bash
-bun run build
-bun run start
-```
-
-### Linting
-
-```bash
-bun run lint
 ```
 
 ## 📖 How to Use
@@ -288,61 +210,6 @@ We welcome contributions! Here's how you can help:
    - Expected vs actual behavior
    - Environment details
 
-### Suggesting Features
-
-1. Check existing [feature requests](../../issues)
-2. Create a new issue with:
-   - Feature description
-   - Use case
-   - Potential implementation
-
-### Pull Requests
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow existing code style
-- Write clear commit messages
-- Add tests for new features
-- Update documentation as needed
-- Ensure all tests pass
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👨‍💻 Author
-
-**Your Name**
-
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [your-profile](https://linkedin.com/in/your-profile)
-- Twitter: [@yourhandle](https://twitter.com/yourhandle)
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - The React framework
-- [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Prisma](https://www.prisma.io/) - Modern database toolkit
-- [Framer Motion](https://www.framer.com/) - Animation library
-- [Lucide](https://lucide.dev/) - Beautiful icons
-- [z-ai-web-dev-sdk](https://sdk.z.ai/) - AI capabilities
-
-## 📞 Support
-
-Need help? Here are some resources:
-
-- 📖 [Documentation](#)
-- 💬 [Discord Community](#)
-- 🐛 [Report Issues](../../issues)
-- 📧 Email: support@example.com
-
 ## 🌟 Show Your Support
 
 If you find this project helpful, consider:
@@ -356,7 +223,7 @@ If you find this project helpful, consider:
 
 <div align="center">
 
-**Built with ❤️ using Next.js and TypeScript**
+**Built with ❤️ using AI & my knownledge and creativity**
 
 [⬆ Back to Top](#-career-vibe-portfolio-generator)
 
